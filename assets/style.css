@@ -11,4 +11,24 @@ header {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-  }
+}
+
+header h1 {
+    font-weight: bold;
+    font-size: 33px;
+    color: white;
+    margin:0;
+}
+
+.searchbtn {
+    background-color: #91c7fa;
+    border-radius: 10px;
+    width: 80%;
+    height: 40px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0.5em 0;
+}
+
