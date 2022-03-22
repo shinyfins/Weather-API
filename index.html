@@ -19,22 +19,61 @@
         <h1>Weather Dashboard</h1>
     </header>
 
-    <div>
+    <div class="container">
+        <div class="row"> 
         <!--City Search-->
 
-        <section>
-            <h2>Search for a City</h2>
-            <input/>
-            <button>Search</button>
+        <section class="cities col-4">
+            <h2 class="m-1">Search for a City:</h2>
+            <input tpye="text" placeholder="Search City" name="city"/>
+            <div class="mb-3">
+            <button type="search" class="searchbtn">
+                Search
+            </button>
+        </div>
+        
+           <p class="slctcity">Atlanta</p>
         </section>
-    </div>
+<!--Curren display city stat-->
+<div class="col-8">
 
-    <section>
-        <div>
-            <span></span>
+    <section class="displayBox col-12 m-4">
+        <div class="row">
+            <span class="cityName">Atlanta (3/30/2021) ☁️</span>
+        </div>
+
+        <p>
+            Temp:
+            <br>
+            Wind:
+            <br>
+            Humidity:
+            <br>
+            UV Index:
+        </p>
+    </section>
+
+    <!--five day forecast-->
+    <section class="fiveDay row">
+        <div class="col-12">
+            <h3>5-Day Forecast:</h3>
+        </div>
+        <div class="row">
+            <div class="col forecast">1000 Degreees</div>
+            <div class="col forecast">1000 Degreees</div>
+            <div class="col forecast">1000 Degreees</div>
+            <div class="col forecast">1000 Degreees</div>
+            <div class="col forecast">1000 Degreees</div>
         </div>
     </section>
 
+</div>
+
+</div>
+
+</div>
+
 </body>
 
+<scip src="assets/index.js"></scip>
 </html>

@@ -32,3 +32,36 @@ header h1 {
     margin: 0.5em 0;
 }
 
+input {
+    width: 80%;
+    height: 40px;
+    font-size: 20px;
+    padding: 0 1em;
+}
+
+.slctcity {
+    border-radius: 10px;
+    background-color: #bdbdbd;
+    width: 80%;
+    height: 40px;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+}
+
+.displayBox {
+    width: 140px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    border: black;
+    border: solid;
+}
+
+.cityName {
+    font-size: 30px;
+}
+
+.fiveDay {
+    font-weight: 30000;
+}
