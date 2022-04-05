@@ -1,48 +1,37 @@
 var userFormEl = document.querySelector("#user-form");
 var cityInputEl = document.querySelector("#city-name");
 var forecastContainerEl = document.querySelector("rows");
-
-
-var formSubmitHandler = function(event){
-  event.preventDefault();
-  //get value from input element 
-  var city = cityInputEl.value.trim();
-
-
-  if (city) {
-    getCityWeather(city);
-    getWeek(city);
-    cityInputEl.value = "";
-  } else {
-    alert("Please enter an actual city");
-  }
-  console.log(event);
-
-};
+var apiKey = "7a25e0075bdfe4c9341cb0fb5b0fe9b3"
+var tempEl = document.querySelector("#temp");
+var nameEl = document.querySelector(".cityName");
 
 var getCityWeather = function(city) {
   
-  //var apiKey = "7a25e0075bdfe4c9341cb0fb5b0fe9b3"
-  var apiURL = 'https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${7a25e0075bdfe4c9341cb0fb5b0fe9b3}'
+  var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
   
 
     fetch(apiURL)
     .then(function(response){
 response.json().then(function(data){      
-   console.log(data, city)
+   console.log(data)
+   console.log(data.main.temp);
+   nameEl.textContent = data.name;
+   tempEl.textContent = data.main.temp;
+   //getWeek(city);
  });
 });
 }
 
 var getWeek = function(city) {
 
-  var apiKey = "7a25e0075bdfe4c9341cb0fb5b0fe9b3"
-  var apiKey = "https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${7a25e0075bdfe4c9341cb0fb5b0fe9b3}"
 
-  fetch(apiURL)
+  var weekapiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
+
+  fetch(weekapiUrl)
   .then(function(response){
     response.json().then(function(data){
       displayWeek(data);
+      console.log ("gello");
     });
   });
 };
@@ -57,6 +46,22 @@ var displayWeek = function(weather) {
   }
 }
 
+var formSubmitHandler = function(event){
+  event.preventDefault();
+  //get value from input element 
+  var city = cityInputEl.value.trim();
+
+
+  if (city) {
+    getCityWeather(city);
+   // getWeek(city);
+    cityInputEl.value = "";
+  } else {
+    alert("Please enter an actual city");
+  }
+  //console.log(event);
+
+};
 userFormEl.addEventListener("submit", formSubmitHandler);
 //getUserRepos();
 //info that we want for assignment 
