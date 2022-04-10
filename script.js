@@ -4,49 +4,60 @@ var forecastContainerEl = document.querySelector("rows");
 var apiKey = "7a25e0075bdfe4c9341cb0fb5b0fe9b3"
 var tempEl = document.querySelector("#temp");
 var nameEl = document.querySelector(".cityName");
+var windEl = document.querySelector("#wind-speed");
+var imgEl = document.querySelector("#icon");
+var humidEl = document.querySelector("#humidity");
+//var dateString = moment.unix(1649209170).format("MM/DD/YYYY");
 
-var getCityWeather = function(city) {
-  
+
+var getCityWeather = function (city) {
+
   var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
-  
 
-    fetch(apiURL)
-    .then(function(response){
-response.json().then(function(data){      
-   console.log(data)
-   console.log(data.main.temp);
-   nameEl.textContent = data.name;
-   tempEl.textContent = data.main.temp;
-   //getWeek(city);
- });
-});
+
+  fetch(apiURL)
+    .then(function (response) {
+      return response.json()
+    }).then(function (data) {
+      console.log(data)
+      console.log(data.main.temp);
+      var dateString = moment.unix(data.dt).format("MM/DD/YYYY");
+      nameEl.textContent = data.name + " " + dateString;
+      tempEl.textContent = data.main.temp;
+      var iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+      imgEl.classList.remove("hide");
+      imgEl.src = iconUrl;
+      windEl.textContent = "Wind Speed- " + data.wind.speed;
+      humidEl.textContent = "Humidity- " + data.main.humidity;
+      getWeek(data.coord.lat, data.coord.lon);
+    });
 }
 
-var getWeek = function(city) {
+var getWeek = function (lat,lon) {
 
 
-  var weekapiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
+  var weekapiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=imperial&appid={}`
 
   fetch(weekapiUrl)
-  .then(function(response){
-    response.json().then(function(data){
-      displayWeek(data);
-      console.log ("gello");
+    .then(function (response) {
+      response.json().then(function (data) {
+        displayWeek(data);
+        console.log("gello");
+      });
     });
-  });
 };
 
-var displayWeek = function(weather) {
+var displayWeek = function (weather) {
   forecastContainerEl.textContent = ""
   forecastTitle.textContent = "Weeks Forecast:";
 
   var forecast = weather.list;
-  for(var i=5; i < forecast.length; i=i+8){
+  for (var i = 5; i < forecast.length; i = i + 8) {
     var dailyForecast = forecast[i];
   }
 }
 
-var formSubmitHandler = function(event){
+var formSubmitHandler = function (event) {
   event.preventDefault();
   //get value from input element 
   var city = cityInputEl.value.trim();
@@ -54,7 +65,7 @@ var formSubmitHandler = function(event){
 
   if (city) {
     getCityWeather(city);
-   // getWeek(city);
+    // getWeek(city);
     cityInputEl.value = "";
   } else {
     alert("Please enter an actual city");
