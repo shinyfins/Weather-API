@@ -7,6 +7,7 @@ var nameEl = document.querySelector(".cityName");
 var windEl = document.querySelector("#wind-speed");
 var imgEl = document.querySelector("#icon");
 var humidEl = document.querySelector("#humidity");
+var pastSearchesButtonEl = document.querySelector("slctcity");
 //var dateString = moment.unix(1649209170).format("MM/DD/YYYY");
 
 
@@ -29,14 +30,16 @@ var getCityWeather = function (city) {
       imgEl.src = iconUrl;
       windEl.textContent = "Wind Speed- " + data.wind.speed;
       humidEl.textContent = "Humidity- " + data.main.humidity;
-      getWeek(data.coord.lat, data.coord.lon);
+      getWeek(city);
+      pastSearch(city);
+      console.log()
     });
 }
 
-var getWeek = function (lat,lon) {
+var getWeek = function (city) {
 
 
-  var weekapiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=imperial&appid={}`
+  var weekapiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
 
   fetch(weekapiUrl)
     .then(function (response) {
@@ -54,7 +57,13 @@ var displayWeek = function (weather) {
   var forecast = weather.list;
   for (var i = 5; i < forecast.length; i = i + 8) {
     var dailyForecast = forecast[i];
+
+    
   }
+}
+
+var pastSearch = function(pastSearch){
+
 }
 
 var formSubmitHandler = function (event) {

@@ -7,4 +7,4 @@ This application will allow the user to make precise city or state requests of t
 The information will be clear and the UI will be intuitive to allow the user to see previous searches.
 <br>
 
-![alt text](assets/)
+![alt text](assets/sprinlkes.png)
