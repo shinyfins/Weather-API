@@ -7,7 +7,11 @@ var nameEl = document.querySelector(".cityName");
 var windEl = document.querySelector("#wind-speed");
 var imgEl = document.querySelector("#icon");
 var humidEl = document.querySelector("#humidity");
-var pastSearchesButtonEl = document.querySelector("slctcity");
+var uvEl = document.querySelector("#uv-index");
+var outLook = document.querySelector("#fiveDay");
+var arraySearches = []
+var recentEl = document.querySelector("#recentSearch");
+
 //var dateString = moment.unix(1649209170).format("MM/DD/YYYY");
 
 
@@ -21,7 +25,8 @@ var getCityWeather = function (city) {
       return response.json()
     }).then(function (data) {
       console.log(data)
-      console.log(data.main.temp);
+      pastSearch(data.name);
+      
       var dateString = moment.unix(data.dt).format("MM/DD/YYYY");
       nameEl.textContent = data.name + " " + dateString;
       tempEl.textContent = data.main.temp;
@@ -30,40 +35,67 @@ var getCityWeather = function (city) {
       imgEl.src = iconUrl;
       windEl.textContent = "Wind Speed- " + data.wind.speed;
       humidEl.textContent = "Humidity- " + data.main.humidity;
-      getWeek(city);
-      pastSearch(city);
-      console.log()
+
+      getWeek(data.coord.lat, data.coord.lon);
+      
     });
 }
 
-var getWeek = function (city) {
-
-
-  var weekapiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`
+var getWeek = function (lat,lon) {
+  var weekapiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&units=imperial&appid=${apiKey}`
 
   fetch(weekapiUrl)
     .then(function (response) {
       response.json().then(function (data) {
-        displayWeek(data);
-        console.log("gello");
+        //displayWeek(data);
+        console.log(data);
+        uvEl.textContent = "UVI- " + data.current.uvi;
+        for (var i = 1; i < 6; i++) {
+          var date = moment.unix(data.daily[i].dt).format("MM/DD/YYYY");
+          var iconUrl = `http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}.png`
+          var divDate = document.createElement("div")
+          var datePEl = document.createElement("p")
+
+          var imgEl = document.createElement("img");
+          datePEl.textContent = date
+          divDate.appendChild(datePEl);
+          imgEl.src = iconUrl
+          divDate.appendChild(imgEl);
+          
+
+          var tempEl = document.createElement("p")
+          tempEl.textContent = "Temp: " + data.daily[i].temp.day
+          divDate.appendChild(tempEl);
+          
+          var windEl = document.createElement("p")
+          windEl.textContent = "Wind Speed: " + data.daily[i].wind_speed
+          divDate.appendChild(windEl);
+
+          var humidEl = document.createElement("p")
+          humidEl.textContent = "Humidity: " + data.daily[i].humidity
+          divDate.appendChild(humidEl);
+
+          console.log(data.daily[i].humidity);
+
+          outLook.appendChild(divDate);
+          
+          
+
+        }
       });
     });
 };
 
-var displayWeek = function (weather) {
-  forecastContainerEl.textContent = ""
-  forecastTitle.textContent = "Weeks Forecast:";
 
-  var forecast = weather.list;
-  for (var i = 5; i < forecast.length; i = i + 8) {
-    var dailyForecast = forecast[i];
 
-    
-  }
-}
-
-var pastSearch = function(pastSearch){
-
+var pastSearch = function(cityName){
+  var buttonEl = document.createElement("button")
+  buttonEl.textContent = cityName;
+  buttonEl.classList.add("slctcity")
+  recentEl.appendChild(buttonEl);
+  arraySearches.push(cityName);
+  console.log(arraySearches);
+  localStorage.setItem("recentSearches",JSON.stringify(arraySearches) )
 }
 
 var formSubmitHandler = function (event) {
@@ -74,6 +106,7 @@ var formSubmitHandler = function (event) {
 
   if (city) {
     getCityWeather(city);
+   // pastSearch(city);
     // getWeek(city);
     cityInputEl.value = "";
   } else {
